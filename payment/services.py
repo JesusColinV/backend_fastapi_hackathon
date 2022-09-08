@@ -15,8 +15,18 @@ async def register_new_service_async(payment:IPayment, db:Session ):
     return payment_object
 
 async def get_paid_service_async(is_paid:bool, db:Session ):
-    return db.query(P).filter(P.is_paid == is_paid).fetchall()
+    return db.query(P).filter(P.is_paid == is_paid).all()
 
 
-async def get_services_async( db:Session ):
-    return db.query(P).select_from(P).all()
+async def get_services_async(db:Session):
+    return db.query(P).all()
+
+async def get_1_services_async(service:str,db:Session):
+    return db.query(P).filter(P.service == service).first()
+
+async def update_services_async(payment:IPayment, db:Session ):
+    payment.is_paid = not payment.is_paid
+    db.add(payment)
+    db.commit()
+    db.refresh(payment)
+    return payment

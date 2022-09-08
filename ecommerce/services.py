@@ -36,3 +36,6 @@ async def post_product(product:IEcommerce, db:Session):
     db.refresh(product_object)
     return product_object
 
+
+async def get_sold_ecommerce_async(is_sold:bool, db:Session ):
+    return db.query(E).filter(E.is_sold == is_sold).all()
